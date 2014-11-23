@@ -8,7 +8,7 @@
 
 class Huffman_tree : public Binary_tree<std::pair<std::string, int>>
 {
-	public: 
+	public:
 
 		Huffman_tree(): Binary_tree<std::pair<std::string, int>>{} {} // standart constructor
 		Huffman_tree(std::shared_ptr<TreeNode<std::pair<std::string, int>>> const& root): // constructor setting root
@@ -18,14 +18,13 @@ class Huffman_tree : public Binary_tree<std::pair<std::string, int>>
 		Huffman_tree(std::shared_ptr<TreeNode<std::pair<std::string, int>>> const& lhs,
 						 std::shared_ptr<TreeNode<std::pair<std::string, int>>> const& rhs);
 		void print() const;
-		// std::string check_side(std::shared_ptr<TreeNode<std::pair<std::string, int>>> actual_node) const;
-		std::string generate_coding()const;
+		std::map<std::string,std::string> generate_coding()const;
 
 };
 
 
 
-template <typename T> // generates a Huffman from a container with iterator 
+template <typename T> // generates a Huffman from a container with iterator
 std::shared_ptr<Huffman_tree> generate_huffman(T const& container){
 
 	auto n = std::make_shared<TreeNode<std::pair<std::string,int>>>(container.front());
@@ -34,7 +33,7 @@ std::shared_ptr<Huffman_tree> generate_huffman(T const& container){
 	for (auto i = container.begin()+1; i != container.end(); ++i)
 	{
 		n = std::make_shared<TreeNode<std::pair<std::string,int>>>(*i);
-		t = std::make_shared<Huffman_tree>(t->get_root(),n);
+		t = std::make_shared<Huffman_tree>(n,t->get_root());
 
 	}
 	return t;
