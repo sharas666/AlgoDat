@@ -19,10 +19,10 @@ void Huffman_tree::print()const{ // prints the tree using the binary trees post 
 	traverse_post_order(f);
 }
 
-class coding
+class coder
 {
 	public:
-		coding(): m_code{""},m_full_coding{}{}
+		coder(): m_code{""},m_full_coding{}{}
 		std::string operator()(std::shared_ptr<TreeNode<std::pair<std::string, int>>> const& actual_node)
 		{
 			if (actual_node->m_father != nullptr)
@@ -36,7 +36,7 @@ class coding
 			{
 				//std::cout << m_code << std::endl;
 				m_full_coding.insert(std::make_pair(actual_node->m_value.first,m_code));
-                    //m_code.pop_back();
+                    m_code.pop_back();
 			}
 			return m_code;
 		}
@@ -49,7 +49,7 @@ class coding
 
 std::map<std::string,std::string> Huffman_tree::generate_coding()const
 {
-	coding code{};
+	coder code{};
 	traverse_pre_order(code);
 	return code.get_coding();
 }

@@ -53,7 +53,7 @@ class Binary_tree
 		}
 
 		template <class Function>
-		void pre_order(std::shared_ptr<TreeNode<T>> const& n, Function f)const
+		void pre_order(std::shared_ptr<TreeNode<T>> const& n, Function &f)const
 		{
 			f(n);
 
@@ -68,7 +68,7 @@ class Binary_tree
 		}
 
 		template <class Function>
-		void traverse_pre_order(Function f)const
+		void traverse_pre_order(Function &f)const
 		{
 			if (m_root != nullptr)
 			{
@@ -77,7 +77,7 @@ class Binary_tree
 		}
 
 		template <class Function>
-		void post_order(std::shared_ptr<TreeNode<T>> const& n, Function f)const
+		void post_order(std::shared_ptr<TreeNode<T>> const& n, Function &f)const
 		{
 			if (n->m_lhs != nullptr)
 			{
@@ -91,7 +91,7 @@ class Binary_tree
 		}
 
 		template <class Function>
-		void traverse_post_order(Function f)const
+		void traverse_post_order(Function &f)const
 		{
 			if (m_root != nullptr)
 			{
@@ -100,7 +100,7 @@ class Binary_tree
 		}
 
 		template <class Function>
-		void in_order(std::shared_ptr<TreeNode<T>> const& n, Function f)const
+		void in_order(std::shared_ptr<TreeNode<T>> const& n, Function &f)const
 		{
 			if (n->m_lhs != nullptr)
 			{
