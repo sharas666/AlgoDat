@@ -22,7 +22,7 @@ void Huffman_tree::print()const{ // prints the tree using the binary trees post 
 class coding
 {
 	public:
-		coding(): m_code{""},m_full_coding{}{}
+		coding(std::string const& searched): m_code{""}, m_searched{searched}{}
 		std::string operator()(std::shared_ptr<TreeNode<std::pair<std::string, int>>> const& actual_node)
 		{
 			if (actual_node->m_father != nullptr)
@@ -32,24 +32,23 @@ class coding
 					if (actual_node == actual_node->m_father->m_rhs)
 						{m_code+="0";}
 				}
-			if (isleaf(actual_node))
+			if (isleaf(actual_node) && actual_node->m_value.first == m_searched)
 			{
-				//std::cout << m_code << std::endl;
-				m_full_coding.insert(std::make_pair(actual_node->m_value.first,m_code));
+				std::cout << m_code << std::endl;
                     //m_code.pop_back();
 			}
 			return m_code;
 		}
-		std::map<std::string,std::string> get_coding()const
-		{return m_full_coding;}
+		std::string get_code()const
+		{return m_code;}
 	private:
+	    std::string m_searched;
 		std::string m_code;
-		std::map<std::string,std::string>  m_full_coding;
 };
 
-std::map<std::string,std::string> Huffman_tree::generate_coding()const
+std::string Huffman_tree::generate_coding(std::string const& searched)const
 {
-	coding code{};
+	coding code{searched};
 	traverse_pre_order(code);
-	return code.get_coding();
+	return code.get_code();
 }

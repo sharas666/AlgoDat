@@ -18,7 +18,7 @@ class Huffman_tree : public Binary_tree<std::pair<std::string, int>>
 		Huffman_tree(std::shared_ptr<TreeNode<std::pair<std::string, int>>> const& lhs,
 						 std::shared_ptr<TreeNode<std::pair<std::string, int>>> const& rhs);
 		void print() const;
-		std::map<std::string,std::string> generate_coding()const;
+		std::string generate_coding(std::string const& s)const;
 
 };
 

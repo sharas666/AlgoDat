@@ -28,8 +28,7 @@ int main(int argc, char const *argv[])
 auto t = generate_huffman(v);
 //t->print();
 //t->generate_coding();
-std::map<std::string, std::string> m = t->generate_coding();
-std::cout << m["e"] << std::endl;
+std::cout << t->generate_coding("c") << std::endl;
 
 
 	return 0;
