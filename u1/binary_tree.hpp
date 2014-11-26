@@ -11,7 +11,7 @@ class Binary_tree;
 
 
 template <typename T>
-struct TreeNode
+struct TreeNode // Tree Node containing pointers too two child nodes and one parent node and a template value
 {
 	TreeNode() : m_value{}, m_lhs{nullptr}, m_rhs{nullptr}{} // standart constructor
 	TreeNode(T const& v, std::shared_ptr<TreeNode<T>> const& lhs, std::shared_ptr<TreeNode<T>> const& rhs)
@@ -35,25 +35,23 @@ struct TreeNode
 
 
 template <typename T>
-class Binary_tree
+class Binary_tree // template binary tree
 {
 	public:
 		Binary_tree():
 			m_root{}
 		{}
 
-		// Binary_tree(TreeNode<T> const& root): m_root{std::make_shared<T>(root)} {}
+		Binary_tree(std::shared_ptr<TreeNode<T>> root): m_root{root} {} // standard constructor
 
-		Binary_tree(std::shared_ptr<TreeNode<T>> root): m_root{root} {}
-
-		Binary_tree(Binary_tree&& rhs):
+		Binary_tree(Binary_tree&& rhs): // move constructor
 			m_root{rhs.m_root}
 		{
 			rhs.m_root = nullptr;
 		}
 
 		template <class Function>
-		void pre_order(std::shared_ptr<TreeNode<T>> const& n, Function &f)const
+		void pre_order(std::shared_ptr<TreeNode<T>> const& n, Function &f)const // traverses through the binary tree in preorder
 		{
 			f(n);
 
@@ -68,7 +66,7 @@ class Binary_tree
 		}
 
 		template <class Function>
-		void traverse_pre_order(Function &f)const
+		void traverse_pre_order(Function &f)const // traverses through the binary tree in preorder beginning at root
 		{
 			if (m_root != nullptr)
 			{
@@ -77,7 +75,7 @@ class Binary_tree
 		}
 
 		template <class Function>
-		void post_order(std::shared_ptr<TreeNode<T>> const& n, Function &f)const
+		void post_order(std::shared_ptr<TreeNode<T>> const& n, Function &f)const // traverses through the binary tree in postorder
 		{
 			if (n->m_lhs != nullptr)
 			{
@@ -91,7 +89,7 @@ class Binary_tree
 		}
 
 		template <class Function>
-		void traverse_post_order(Function &f)const
+		void traverse_post_order(Function &f)const // traverses through the binary tree in postorder beginning at root
 		{
 			if (m_root != nullptr)
 			{
@@ -100,7 +98,7 @@ class Binary_tree
 		}
 
 		template <class Function>
-		void in_order(std::shared_ptr<TreeNode<T>> const& n, Function &f)const
+		void in_order(std::shared_ptr<TreeNode<T>> const& n, Function &f)const // traverses through the binary tree inorder
 		{
 			if (n->m_lhs != nullptr)
 			{
@@ -116,7 +114,7 @@ class Binary_tree
 		}
 
 		template <class Function>
-		void traverse_in_order(Function f)const
+		void traverse_in_order(Function f)const // traverses through the binary tree inorder beginning at root
 		{
 			if (m_root != nullptr)
 			{
@@ -129,7 +127,7 @@ class Binary_tree
 			return m_root;
 		}
 
-		bool isleaf(std::shared_ptr<TreeNode<T>> const& n)
+		bool is_leaf(std::shared_ptr<TreeNode<T>> const& n)const // checks if a node is a leaf node
 		{
 			if (n->m_lhs == nullptr && n->m_lhs == nullptr)
 				{return true;}
@@ -138,12 +136,12 @@ class Binary_tree
 		}
 
 
-		bool empty() const
+		bool empty() const // checks if the tree has no nodes
 		{
 			if (m_root == nullptr)
-				{return false;}
-			else
 				{return true;}
+			else
+				{return false;}
 		}
 
 		Binary_tree& operator= (Binary_tree rhs)
@@ -171,7 +169,7 @@ class Binary_tree
 #endif // # define BINARY_TREE_HPP
 
 template <typename T>
-bool isleaf(std::shared_ptr<TreeNode<T>> const& n)
+bool is_leaf(std::shared_ptr<TreeNode<T>> const& n) // free function to check if a node is a leaf node
 {
 	if (n->m_lhs == nullptr && n->m_lhs == nullptr)
 		{return true;}

@@ -17,14 +17,16 @@ class Huffman_tree : public Binary_tree<std::pair<std::string, int>>
 		// constructor taking two child notes and automatically setting the root node
 		Huffman_tree(std::shared_ptr<TreeNode<std::pair<std::string, int>>> const& lhs,
 						 std::shared_ptr<TreeNode<std::pair<std::string, int>>> const& rhs);
-		void print() const;
-		std::map<std::string,std::string> generate_coding()const;
+		void print() const; // prints the tree
+		std::map<std::string,std::string> encode()const; // generates the coding for the entire tree
+		std::string encode(std::string const& s)const; // generates the coding for a single letter
+		std::string decode(std::string const& code)const; // decodes a single letter
 
 };
 
 
 
-template <typename T> // generates a Huffman from a container with iterator
+template <typename T> // generates a Huffman_tree from a container with iterator
 std::shared_ptr<Huffman_tree> generate_huffman(T const& container){
 
 	auto n = std::make_shared<TreeNode<std::pair<std::string,int>>>(container.front());

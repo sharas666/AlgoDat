@@ -3,38 +3,41 @@
 #include <string>
 #include <memory>
 #include <iostream>
+#include <cctype>
+#include <algorithm>
 
 
 
 
 int main(int argc, char const *argv[])
 {
-	std::vector<std::pair<std::string,int>> v;
-
-/*	for (int i = 1; i <= 5; ++i)
-	{
-		v.push_back({"c"+std::to_string(i),i});
-	}*/
-		// std::cout << v.size() << std::endl;
-		v.push_back({"a",1});
-		v.push_back({"b",2});
-		v.push_back({"c",3});
-		v.push_back({"d",4});
-		v.push_back({"e",5});
 
 
+    std::vector<std::pair<std::string,int>> v;
+
+    v.push_back({"E",29});
+    v.push_back({"O",15});
+    v.push_back({"M",10});
+    v.push_back({"N",8});
+    v.push_back({"S",4});
+
+    auto t = generate_huffman(v);
+
+    if (argc == 2)
+    {
+        std::string input = argv[1];
+
+        if (std::all_of( input.begin(), input.end(), ::isdigit ))
+        {
+            std::cout << t->decode(input) << std::endl;
+
+        }
+        else
+        {
+            std::cout << t->encode(input) << std::endl;
+        }
 
 
-auto t = generate_huffman(v);
-//t->print();
-//t->generate_coding();
-/*std::map<std::string, std::string> m = t->generate_coding();
-std::cout << m["e"] << std::endl;
-std::cout << m["d"] << std::endl;
-std::cout << m["c"] << std::endl;
-std::cout << m["b"] << std::endl;
-std::cout << m["a"] << std::endl;
-*/
-
+    }
 	return 0;
 }
