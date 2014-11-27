@@ -3,6 +3,7 @@
 #include <utility>
 #include <functional>
 #include "binary_tree.hpp"
+#include <memory>
 
 template <typename T>
 void restore_heap(Binary_tree<T> &t)
@@ -30,11 +31,11 @@ Binary_tree<T> create_heap(container const& c)
 {
 	Binary_tree<T> heap{};
 
-		auto root = std_make_shared<TreeNode<T>>();
-		auto n = std::make_shared<TreeNode<T>>(container.front());
-		for (auto i = container.begin()+1; i != container.end(); ++i)
+		auto root = std::make_shared<TreeNode<T>>();
+		auto n = std::make_shared<TreeNode<T>>(c.front());
+		for (auto i = c.begin()+1; i != c.end(); ++i)
 		{
-		n = std::make_shared<TreeNode<T>(*i);
+		n = std::make_shared<TreeNode<T>>(*i);
 
 }
 

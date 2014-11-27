@@ -2,6 +2,7 @@
 #define BINARY_TREE_HPP
 
 #include <memory>
+#include <vector>
 
 // Tree . hpp
 
@@ -38,24 +39,28 @@ template <typename T>
 class Binary_tree // template binary tree
 {
 	public:
-		Binary_tree():
-			m_root{}
-		{}
+		Binary_tree(){}  // standard constructor
 
-		Binary_tree(std::shared_ptr<TreeNode<T>> root): m_root{root} {} // standard constructor
-		Binary_tree(std::shared_ptr<TreeNode<T>> root, std::shared_ptr<TreeNode<T>> lhs,
-		 				std::shared_ptr<TreeNode<T>> rhs): m_root{root} {
-			m_root->m_lhs = lhs;
-			m_root->m_rhs = rhs;
-			m_root->m_lhs.m_father = m_root;
-			m_root->m_rhs.m_father = m_root;
-		}
+		// Binary_tree(TreeNode<T> const& root): m_tree_elements{} {m_tree_elements.}
+		// Binary_tree(std::shared_ptr<TreeNode<T>> root, std::shared_ptr<TreeNode<T>> lhs,
+		//  				std::shared_ptr<TreeNode<T>> rhs): m_tree_elements.front(){root} {
+		// 	m_tree_elements.front().m_lhs = lhs;
+		// 	m_tree_elements.front().m_rhs = rhs;
+		// 	m_tree_elements.front().m_lhs.m_father = m_tree_elements.front();
+		// 	m_tree_elements.front().m_rhs.m_father = m_tree_elements.front();
+		// }
 
-		Binary_tree(Binary_tree&& rhs): // move constructor
-			m_root{rhs.m_root}
+		void generate()
 		{
-			rhs.m_root = nullptr;
+
 		}
+
+		void insert_node(TreeNode<T> const& new_node)
+		{
+			
+			m_tree_elements.push_back(new_node);
+		}
+
 
 		template <class Function>
 		void pre_order(std::shared_ptr<TreeNode<T>> const& n, Function &f)const // traverses through the binary tree in preorder
@@ -75,9 +80,9 @@ class Binary_tree // template binary tree
 		template <class Function>
 		void traverse_pre_order(Function &f)const // traverses through the binary tree in preorder beginning at root
 		{
-			if (m_root != nullptr)
+			if (!empty())
 			{
-				pre_order(m_root, f);
+				pre_order(std::make_shared<TreeNode<T>>(m_tree_elements.front()), f);
 			}
 		}
 
@@ -98,9 +103,9 @@ class Binary_tree // template binary tree
 		template <class Function>
 		void traverse_post_order(Function &f)const // traverses through the binary tree in postorder beginning at root
 		{
-			if (m_root != nullptr)
+			if (!empty())
 			{
-				post_order(m_root, f);
+				post_order(std::make_shared<TreeNode<T>>(m_tree_elements.front()), f);
 			}
 		}
 
@@ -123,15 +128,15 @@ class Binary_tree // template binary tree
 		template <class Function>
 		void traverse_in_order(Function f)const // traverses through the binary tree inorder beginning at root
 		{
-			if (m_root != nullptr)
+			if (!empty())
 			{
-				in_order(m_root, f);
+				in_order(std::make_shared<TreeNode<T>>(m_tree_elements.front()), f);
 			}
 		}
 
-		std::shared_ptr<TreeNode<T>> get_root()const
+		TreeNode<T> get_root()const
 		{
-			return m_root;
+			return m_tree_elements.front();
 		}
 
 		bool is_leaf(std::shared_ptr<TreeNode<T>> const& n)const // checks if a node is a leaf node
@@ -145,10 +150,7 @@ class Binary_tree // template binary tree
 
 		bool empty() const // checks if the tree has no nodes
 		{
-			if (m_root == nullptr)
-				{return true;}
-			else
-				{return false;}
+			return m_tree_elements.empty();
 		}
 
 		Binary_tree& operator= (Binary_tree rhs)
@@ -159,7 +161,7 @@ class Binary_tree // template binary tree
 
 		void swap(Binary_tree& rhs)
 		{
-			std::swap(m_root, rhs.m_root);
+			std::swap(m_tree_elements, rhs.m_tree_elements);
 		}
 
 		friend void swap(Binary_tree& a, Binary_tree& b)
@@ -168,7 +170,7 @@ class Binary_tree // template binary tree
 		}
 
 	protected:
-		std::shared_ptr<TreeNode<T>> m_root;
+		std::vector<TreeNode<T>> m_tree_elements;
 };
 
 
