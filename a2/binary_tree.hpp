@@ -14,22 +14,23 @@ class Binary_tree;
 template <typename T>
 struct TreeNode // Tree Node containing pointers too two child nodes and one parent node and a template value
 {
-	TreeNode() : m_value{}, m_lhs{nullptr}, m_rhs{nullptr}{} // standart constructor
+	TreeNode() : m_value{}, m_lhs{nullptr}, m_rhs{nullptr}, m_depth{} {} // standart constructor
 	TreeNode(T const& v, std::shared_ptr<TreeNode<T>> const& lhs, std::shared_ptr<TreeNode<T>> const& rhs)
-		:m_value{v}, m_lhs{lhs}, m_rhs{rhs}, m_father{} {} // constructor taking value and child pointers
-	TreeNode(T const& v, std::shared_ptr<TreeNode<T>> const& lhs, std::shared_ptr<TreeNode<T>> const& rhs, std::shared_ptr<TreeNode<T>> const& father)
-		:m_value{v}, m_lhs{lhs}, m_rhs{rhs}, m_father{father} {} // constructor taking value, child and father pointers
+		:m_value{v}, m_lhs{lhs}, m_rhs{rhs}, m_parent{}, m_depth{} {} // constructor taking value and child pointers
+	TreeNode(T const& v, std::shared_ptr<TreeNode<T>> const& lhs, std::shared_ptr<TreeNode<T>> const& rhs, std::shared_ptr<TreeNode<T>> const& parent)
+		:m_value{v}, m_lhs{lhs}, m_rhs{rhs}, m_parent{parent}, m_depth{} {} // constructor taking value, child and parent pointers
 	TreeNode(std::shared_ptr<TreeNode<T>> const& lhs, std::shared_ptr<TreeNode<T>> const& rhs)
-		:m_value{}, m_lhs{lhs}, m_rhs{rhs}, m_father{} {} // constructor taking child pointers
+		:m_value{}, m_lhs{lhs}, m_rhs{rhs}, m_parent{}, m_depth{} {} // constructor taking child pointers
 	TreeNode(T const& v) // constructor taking value
-		:m_value{v}, m_lhs{nullptr}, m_rhs{nullptr},m_father{} {}
-	TreeNode(T const& v, std::shared_ptr<TreeNode<T>> const& father) // constructor taking value and father
-		:m_value{v}, m_lhs{nullptr}, m_rhs{nullptr},m_father{father} {}
+		:m_value{v}, m_lhs{nullptr}, m_rhs{nullptr},m_parent{}, m_depth{} {}
+	TreeNode(T const& v, std::shared_ptr<TreeNode<T>> const& parent) // constructor taking value and parent
+		:m_value{v}, m_lhs{nullptr}, m_rhs{nullptr},m_parent{parent}, m_depth{} {}
 
 	T m_value;
 	std::shared_ptr<TreeNode<T>> m_lhs;
 	std::shared_ptr<TreeNode<T>> m_rhs;
-	std::shared_ptr<TreeNode<T>> m_father;
+	std::shared_ptr<TreeNode<T>> m_parent;
+	int m_depth;
 };
 
 
@@ -39,28 +40,22 @@ template <typename T>
 class Binary_tree // template binary tree
 {
 	public:
-		Binary_tree(){}  // standard constructor
+		Binary_tree(){}//m_tree_elements{} {}  // standard constructor
 
 		// Binary_tree(TreeNode<T> const& root): m_tree_elements{} {m_tree_elements.}
 		// Binary_tree(std::shared_ptr<TreeNode<T>> root, std::shared_ptr<TreeNode<T>> lhs,
 		//  				std::shared_ptr<TreeNode<T>> rhs): m_tree_elements.front(){root} {
 		// 	m_tree_elements.front().m_lhs = lhs;
 		// 	m_tree_elements.front().m_rhs = rhs;
-		// 	m_tree_elements.front().m_lhs.m_father = m_tree_elements.front();
-		// 	m_tree_elements.front().m_rhs.m_father = m_tree_elements.front();
+		// 	m_tree_elements.front().m_lhs.m_parent = m_tree_elements.front();
+		// 	m_tree_elements.front().m_rhs.m_parent = m_tree_elements.front();
 		// }
 
-		void generate()
-		{
 
-		}
-
-		void insert_node(TreeNode<T> const& new_node)
+		void add(std::shared_ptr<TreeNode<T>> const& new_node) // adds an element to the node vector with out setting the tree structure
 		{
-			
 			m_tree_elements.push_back(new_node);
 		}
-
 
 		template <class Function>
 		void pre_order(std::shared_ptr<TreeNode<T>> const& n, Function &f)const // traverses through the binary tree in preorder
@@ -82,7 +77,7 @@ class Binary_tree // template binary tree
 		{
 			if (!empty())
 			{
-				pre_order(std::make_shared<TreeNode<T>>(m_tree_elements.front()), f);
+				pre_order(m_tree_elements.front(), f);
 			}
 		}
 
@@ -105,7 +100,7 @@ class Binary_tree // template binary tree
 		{
 			if (!empty())
 			{
-				post_order(std::make_shared<TreeNode<T>>(m_tree_elements.front()), f);
+				post_order(m_tree_elements.front(), f);
 			}
 		}
 
@@ -130,11 +125,11 @@ class Binary_tree // template binary tree
 		{
 			if (!empty())
 			{
-				in_order(std::make_shared<TreeNode<T>>(m_tree_elements.front()), f);
+				in_order(m_tree_elements.front(), f);
 			}
 		}
 
-		TreeNode<T> get_root()const
+		std::shared_ptr<TreeNode<T>> get_root()const
 		{
 			return m_tree_elements.front();
 		}
@@ -153,6 +148,11 @@ class Binary_tree // template binary tree
 			return m_tree_elements.empty();
 		}
 
+		int size() const
+			{
+				return m_tree_elements.size();
+			}
+
 		Binary_tree& operator= (Binary_tree rhs)
 		{
 			swap(rhs);
@@ -170,18 +170,18 @@ class Binary_tree // template binary tree
 		}
 
 	protected:
-		std::vector<TreeNode<T>> m_tree_elements;
+		std::vector<std::shared_ptr<TreeNode<T>>> m_tree_elements;
 };
 
 
 
 #endif // # define BINARY_TREE_HPP
 
-template <typename T>
-bool is_leaf(std::shared_ptr<TreeNode<T>> const& n) // free function to check if a node is a leaf node
-{
-	if (n->m_lhs == nullptr && n->m_lhs == nullptr)
-		{return true;}
-	else
-		{return false;}
-}
+// template <typename T>
+// bool is_leaf(std::shared_ptr<TreeNode<T>> const& n) // free function to check if a node is a leaf node
+// {
+// 	if (n->m_lhs == nullptr && n->m_lhs == nullptr)
+// 		{return true;}
+// 	else
+// 		{return false;}
+// }

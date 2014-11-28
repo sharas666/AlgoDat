@@ -1,7 +1,7 @@
-all: main
+all: mainexe
 
-main: 
-	g++ -o main main.cpp heap_sort.hpp -std=c++0x && ./main
+mainexe: 
+	g++ -o main main.cpp -std=c++0x
 
 
 clean:

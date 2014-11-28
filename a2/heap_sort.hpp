@@ -15,9 +15,9 @@ void restore_heap(Binary_tree<T> &t)
 			 actual->m_rhs->m_value))
 		{
 
-			if(actual->m_value > actual->m_father->m_value)
+			if(actual->m_value > actual->m_parent->m_value)
 			{
-				std::swap(actual->m_value, actual->m_father->m_value);
+				std::swap(actual->m_value, actual->m_parent->m_value);
 			}
 			else
 				{actual = nullptr;}
