@@ -3,6 +3,11 @@
 
 #include "binary_tree.hpp"
 #include <functional>
+#include <memory>
+
+template <typename T>
+inline bool operator> (std::shared_ptr<TreeNode<T>> lhs, const std::shared_ptr<TreeNode<T>> rhs)
+    { return (lhs->m_value > rhs->m_value); }
 
 template <typename T>
 class Heap : public Binary_tree<T>
@@ -12,19 +17,19 @@ class Heap : public Binary_tree<T>
 
 		void down_heap()
 		{
-			auto actual = this->get_root();
-			if (!actual->is_leaf())
+			auto current = this->get_root();
+			if (!current->is_leaf())
 			{
-				for(actual; actual!=nullptr; actual=std::greater<T>(actual->m_rhs->m_value,
-					 actual->m_rhs->m_value))
+				for(current; current!=nullptr; current=std::greater<std::shared_ptr<TreeNode<T>>(current->m_lhs,
+					 current->m_rhs))
 				{
 
-					if(actual->m_value > actual->m_parent->m_value)
+					if(current->m_value > current->m_parent->m_value)
 					{
-						std::swap(actual->m_value, actual->m_parent->m_value);
+						std::swap(current->m_value, current->m_parent->m_value);
 					}
 					else
-						{actual = nullptr;}
+						{current = nullptr;}
 
 				}
 			}
@@ -32,20 +37,17 @@ class Heap : public Binary_tree<T>
 
 		void up_heap()
 		{
-			auto actual = this->m_tree_elements.back();
-			if (actual->is_leaf())
+			auto current = this->m_tree_elements.back();
+			for(current; current!=nullptr; current=current->m_parent)
 			{
-				for(actual; actual!=nullptr; actual=actual->m_parent)
+
+				if(current->m_value > current->m_parent->m_value)
 				{
-
-					if(actual->m_value > actual->m_parent->m_value)
-					{
-						std::swap(actual->m_value, actual->m_parent->m_value);
-					}
-					else
-						{actual = nullptr;}
-
+					std::swap(current->m_value, current->m_parent->m_value);
 				}
+				else
+					{current = nullptr;}
+
 			}
 		}
 
