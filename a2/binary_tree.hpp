@@ -26,6 +26,14 @@ struct TreeNode // Tree Node containing pointers too two child nodes and one par
 	TreeNode(T const& v, std::shared_ptr<TreeNode<T>> const& parent) // constructor taking value and parent
 		:m_value{v}, m_lhs{nullptr}, m_rhs{nullptr},m_parent{parent}, m_depth{} {}
 
+    bool is_leaf()const // checks if a node is a leaf node
+    {
+        if (m_lhs == nullptr && m_lhs == nullptr)
+            {return true;}
+        else
+            {return false;}
+    }
+
 	T m_value;
 	std::shared_ptr<TreeNode<T>> m_lhs;
 	std::shared_ptr<TreeNode<T>> m_rhs;
@@ -134,13 +142,7 @@ class Binary_tree // template binary tree
 			return m_tree_elements.front();
 		}
 
-		bool is_leaf(std::shared_ptr<TreeNode<T>> const& n)const // checks if a node is a leaf node
-		{
-			if (n->m_lhs == nullptr && n->m_lhs == nullptr)
-				{return true;}
-			else
-				{return false;}
-		}
+
 
 
 		bool empty() const // checks if the tree has no nodes
@@ -176,12 +178,3 @@ class Binary_tree // template binary tree
 
 
 #endif // # define BINARY_TREE_HPP
-
-// template <typename T>
-// bool is_leaf(std::shared_ptr<TreeNode<T>> const& n) // free function to check if a node is a leaf node
-// {
-// 	if (n->m_lhs == nullptr && n->m_lhs == nullptr)
-// 		{return true;}
-// 	else
-// 		{return false;}
-// }
