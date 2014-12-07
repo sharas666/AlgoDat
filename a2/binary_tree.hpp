@@ -34,6 +34,14 @@ struct TreeNode // Tree Node containing pointers too two child nodes and one par
             {return false;}
     }
 
+    bool is_complete()const // checks if a node has two child nodes
+    {
+        if (m_lhs == nullptr || m_rhs == nullptr)
+            {return false;}
+        else
+            {return true;}
+    }
+
 	T m_value;
 	std::shared_ptr<TreeNode<T>> m_lhs;
 	std::shared_ptr<TreeNode<T>> m_rhs;
@@ -155,6 +163,12 @@ class Binary_tree // template binary tree
 				return m_tree_elements.size();
 			}
 
+
+		void print()const{ // prints the tree using the binary trees post post order traversing and a lambda
+		auto f = [](std::shared_ptr<TreeNode<T>> const& n){std::cout << n->m_value << std::endl;};
+		traverse_pre_order(f);
+		}
+
 		Binary_tree& operator= (Binary_tree rhs)
 		{
 			swap(rhs);
@@ -175,6 +189,9 @@ class Binary_tree // template binary tree
 		std::vector<std::shared_ptr<TreeNode<T>>> m_tree_elements;
 };
 
+template <typename T>
+inline bool operator> (std::shared_ptr<TreeNode<T>> lhs, const std::shared_ptr<TreeNode<T>> rhs)
+	{ return (lhs->m_value > rhs->m_value); }
 
 
 #endif // # define BINARY_TREE_HPP

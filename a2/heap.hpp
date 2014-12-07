@@ -4,10 +4,10 @@
 #include "binary_tree.hpp"
 #include <functional>
 #include <memory>
+#include <cmath>
+#include <vector>
 
-template <typename T>
-inline bool operator> (std::shared_ptr<TreeNode<T>> lhs, const std::shared_ptr<TreeNode<T>> rhs)
-    { return (lhs->m_value > rhs->m_value); }
+
 
 template <typename T>
 class Heap : public Binary_tree<T>
@@ -15,54 +15,112 @@ class Heap : public Binary_tree<T>
 	public:
 		Heap() {} // standart constructor
 
-		void down_heap()
+		// void down_heap()
+		// {
+		// 	auto current = this->get_root();
+		// 	if (!current->is_leaf())
+		// 	{
+		// 		for(current; current!=nullptr; current=std::greater<std::shared_ptr<TreeNode<T>>>(current->m_lhs,
+		// 			 current->m_rhs))
+		// 		{
+
+		// 			if(current->m_value > current->m_parent->m_value)
+		// 			{
+		// 				std::swap(current->m_value, current->m_parent->m_value);
+		// 			}
+		// 			else
+		// 				{current = nullptr;}
+
+		// 		}
+		// 	}
+		// }
+
+		// void up_heap(int steps)
+		// {
+		// 	auto current = this->m_tree_elements.back();
+		// 	for(current; current->m_parent!=nullptr; current=current->m_parent)
+		// 	{
+		// 		std::cout << "a" << std::endl;
+
+		// 		if(current->m_value > current->m_parent->m_value)
+		// 		{
+		// 			std::swap(current->m_value, current->m_parent->m_value);
+		// 		}
+		// 		else
+		// 			{break;}
+
+		// 	}
+		// }
+
+
+
+		std::shared_ptr<TreeNode<T>> get_greater_child(std::shared_ptr<TreeNode<T>> const& current) const
+		{
+			std::shared_ptr<TreeNode<T>> greater_child;
+			if (!current->is_complete())
+			{
+				greater_child = current->m_lhs;
+			}
+			else
+			{
+				greater_child = current->m_lhs > current->m_rhs ? current->m_lhs : current->m_rhs;
+			}	
+			return greater_child;		
+		}
+
+		void down_heap(std::shared_ptr<TreeNode<T>> const& end)
 		{
 			auto current = this->get_root();
-			if (!current->is_leaf())
+			// std::cout << current->m_value << std::endl;
+			std::shared_ptr<TreeNode<T>> next;
+			if(!current->is_leaf())
 			{
-				for(current; current!=nullptr; current=std::greater<std::shared_ptr<TreeNode<T>>(current->m_lhs,
-					 current->m_rhs))
+				// std::cout << end->m_value << std::endl;
+				auto next = get_greater_child(current);
+				while (current < next && next->m_value <= end->m_value)
 				{
-
-					if(current->m_value > current->m_parent->m_value)
-					{
-						std::swap(current->m_value, current->m_parent->m_value);
-					}
-					else
-						{current = nullptr;}
-
+					std::swap(current->m_value, next->m_value);
+					current = next;
+					next = get_greater_child(current);
+					// if(next > end)
+					// {
+					// 	next = current->m_lhs;
+					// }
+					// std::cout << (*(end+1))->m_value << std::endl;
+										 
 				}
 			}
+			// std::cout << this->get_root()->m_value << std::endl;
+		}
+
+		void down_heap() // swaps an element down the heap checking every node
+		{
+			down_heap(this->m_tree_elements.end()-1);
 		}
 
 		void up_heap()
 		{
 			auto current = this->m_tree_elements.back();
-			for(current; current!=nullptr; current=current->m_parent)
+			while (current->m_parent != nullptr && current->m_value > current->m_parent->m_value)
 			{
-
-				if(current->m_value > current->m_parent->m_value)
-				{
-					std::swap(current->m_value, current->m_parent->m_value);
-				}
-				else
-					{current = nullptr;}
-
+				std::swap(current->m_value, current->m_parent->m_value);
+				current=current->m_parent;
 			}
 		}
 
 
-		void add_node(std::shared_ptr<TreeNode<T>> const& new_node) // adds a node on the correct position
+		void insert_node(std::shared_ptr<TreeNode<T>> const& new_node) // adds a node on the correct position
 		{
 			if(this->empty()) // sets root if empty
 			{
-				//new_node->m_depth=0;
+				new_node->m_depth=0;
 				this->add(new_node);
 			}
 			else
             {
                 this->add(new_node);
-                new_node->m_parent = *(this->m_tree_elements.begin() + (this->m_tree_elements.size()-1)/2); // calculates position of parent node and sets pointer to it
+                new_node->m_parent = *(this->m_tree_elements.begin() + (this->size()-2)/2); // calculates position of parent node and sets pointer to it // size -2 because add() already pushed the node
+                // std::cout << new_node->m_parent->m_value << std::endl;
                 if (new_node->m_parent->m_lhs == nullptr)
                 {
                     new_node->m_parent->m_lhs = new_node;	// sets parent nodes
@@ -75,8 +133,32 @@ class Heap : public Binary_tree<T>
                 {
                     std::cout << "structure error" << std::endl;
                 }
+                new_node->m_depth=new_node->m_parent->m_depth+1;
                 up_heap();
             }
+		}
+
+		void sort()
+		{
+			auto last_unsorted = this->m_tree_elements.end()-1;
+			while(last_unsorted != this->m_tree_elements.begin())
+			{
+
+				std::swap(this->get_root()->m_value, (*last_unsorted)->m_value);
+				// std::cout << (*(last_unsorted))->m_value << std::endl;
+				
+				// std::cout << (*last_unsorted)->m_value << std::endl;
+				down_heap(*last_unsorted);
+				--last_unsorted;
+			}
+		}
+
+		void print_vector() const
+		{
+			for (auto it = this->m_tree_elements.begin(); it != this->m_tree_elements.end(); ++it)
+			{
+				std::cout << (*it)->m_value << std::endl;
+			}
 		}
 
 		template <typename container>
@@ -86,7 +168,7 @@ class Heap : public Binary_tree<T>
 			for (auto i = c.begin(); i != c.end(); ++i)
 			{
 				to_add = std::make_shared<TreeNode<T>>(*i);
-				add_node(to_add);
+				insert_node(to_add);
 			}
 		}
 
