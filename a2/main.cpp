@@ -13,6 +13,7 @@ bool is_digits(const std::string &str)
 
 int main(int argc, char const *argv[])
 {
+    if (argc > 2){
     std::string test_string;
     int to_push;
     std::vector<int> v;
@@ -38,6 +39,11 @@ int main(int argc, char const *argv[])
     h.generate(v); // insert elements of v into heap
     h.sort(); // sort heap
   	h.print_vector(); // print sorted vector
+  }
+  else
+  {
+    std::cout << "no arguments given" << std::endl;
+  }
 
 	return 0;
 }
