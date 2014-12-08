@@ -11,9 +11,9 @@ int main(int argc, char const *argv[])
 
 
     std::vector<int> v;
-    for (int i = 4; i > 0; --i)
+    for (int i = 30; i > 0; --i)
     {
-    	v.push_back(i);
+    	v.push_back(rand()%100);
     }
     // v.push_back(8);
     // v.push_back(3);

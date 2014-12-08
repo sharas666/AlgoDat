@@ -36,10 +36,10 @@ struct TreeNode // Tree Node containing pointers too two child nodes and one par
 
     bool is_complete()const // checks if a node has two child nodes
     {
-        if (m_lhs == nullptr || m_rhs == nullptr)
-            {return false;}
-        else
+        if (!(m_lhs == nullptr || m_rhs == nullptr))
             {return true;}
+        else
+            {return false;}
     }
 
 	T m_value;
@@ -57,16 +57,6 @@ class Binary_tree // template binary tree
 {
 	public:
 		Binary_tree(){}//m_tree_elements{} {}  // standard constructor
-
-		// Binary_tree(TreeNode<T> const& root): m_tree_elements{} {m_tree_elements.}
-		// Binary_tree(std::shared_ptr<TreeNode<T>> root, std::shared_ptr<TreeNode<T>> lhs,
-		//  				std::shared_ptr<TreeNode<T>> rhs): m_tree_elements.front(){root} {
-		// 	m_tree_elements.front().m_lhs = lhs;
-		// 	m_tree_elements.front().m_rhs = rhs;
-		// 	m_tree_elements.front().m_lhs.m_parent = m_tree_elements.front();
-		// 	m_tree_elements.front().m_rhs.m_parent = m_tree_elements.front();
-		// }
-
 
 		void add(std::shared_ptr<TreeNode<T>> const& new_node) // adds an element to the node vector with out setting the tree structure
 		{
@@ -150,9 +140,6 @@ class Binary_tree // template binary tree
 			return m_tree_elements.front();
 		}
 
-
-
-
 		bool empty() const // checks if the tree has no nodes
 		{
 			return m_tree_elements.empty();
@@ -162,7 +149,6 @@ class Binary_tree // template binary tree
 			{
 				return m_tree_elements.size();
 			}
-
 
 		void print()const{ // prints the tree using the binary trees post post order traversing and a lambda
 		auto f = [](std::shared_ptr<TreeNode<T>> const& n){std::cout << n->m_value << std::endl;};
@@ -188,10 +174,6 @@ class Binary_tree // template binary tree
 	protected:
 		std::vector<std::shared_ptr<TreeNode<T>>> m_tree_elements;
 };
-
-template <typename T>
-inline bool operator> (std::shared_ptr<TreeNode<T>> lhs, const std::shared_ptr<TreeNode<T>> rhs)
-	{ return (lhs->m_value > rhs->m_value); }
 
 
 #endif // # define BINARY_TREE_HPP
