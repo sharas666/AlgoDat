@@ -11,7 +11,7 @@ int main(int argc, char const *argv[])
 
 
     std::vector<int> v;
-    for (int i = 10; i > 0; --i)
+    for (int i = 4; i > 0; --i)
     {
     	v.push_back(i);
     }
@@ -25,7 +25,8 @@ int main(int argc, char const *argv[])
     h.generate(v);
     h.sort();
   	h.print_vector();
-  	// h.print();
+  	//h.print();
+  	//std::cout << h.get_root()->m_value << std::endl;
 
 
 	return 0;
