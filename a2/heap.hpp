@@ -51,6 +51,23 @@ class Heap : public Binary_tree<T>
 				}
 			}
 		}
+		void down_heap_min()
+		{
+			auto current = this->get_root();
+			std::shared_ptr<TreeNode<T>> next;
+			if(!current->is_leaf())
+			{
+				auto next = get_greater_child(current);
+				/* swaps the parent node with the greater child as long as a
+				child exists and the parent note is smaller then the greater child */
+				while (next != nullptr && current->m_value < next->m_value)
+				{
+					std::swap(current->m_value, next->m_value);
+					current = next;
+					next = get_greater_child(current);
+				}
+			}
+		}
 
 		// swaps the last node of the tree up the heap until heap condition is restored
 		void up_heap()
